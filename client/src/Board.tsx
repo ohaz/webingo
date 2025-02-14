@@ -9,6 +9,35 @@ type BoardEntry = {
   canBeEdited: boolean;
 };
 
+const solutions = [
+    [true, true, true, true, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
+    [false, false, false, false, false, true, true, true, true, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
+    [false, false, false, false, false, false, false, false, false, false, true, true, true, true, true, false, false, false, false, false, false, false, false, false, false],
+    [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, true, true, true, true, false, false, false, false, false],
+    [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, true, true, true, true],
+
+    [true, false, false, false, false, true, false, false, false, false, true, false, false, false, false, true, false, false, false, false, true, false, false, false, false],
+    [false, true, false, false, false, false, true, false, false, false, false, true, false, false, false, false, true, false, false, false, false, true, false, false, false],
+    [false, false, true, false, false, false, false, true, false, false, false, false, true, false, false, false, false, true, false, false, false, false, true, false, false],
+    [false, false, false, true, false, false, false, false, true, false, false, false, false, true, false, false, false, false, true, false, false, false, false, true, false],
+    [false, false, false, false, true, false, false, false, false, true, false, false, false, false, true, false, false, false, false, true, false, false, false, false, true],
+
+    [
+        true, false, false, false, false,
+        false, true, false, false, false,
+        false, false, true, false, false,
+        false, false, false, true, false,
+        false, false, false, false, true,
+    ],
+    [
+        false, false, false, false, true,
+        false, false, false, true, false,
+        false, false, true, false, false,
+        false, true, false, false, false,
+        true, false, false, false, false,
+    ],
+]
+
 function shuffle<T>(array: T[]) {
   let currentIndex = array.length;
 
@@ -79,8 +108,18 @@ export function Board() {
     setBoard(createBoard());
   }
 
+  function hasWon() {
+    const equalsCheck = (a: boolean[], b: boolean[]) => a.length === b.length && a.every((v, i) => v === b[i]);
+
+    return solutions.some((solution) => {
+        const and = solution.map((value, i) => value && board[i].active);
+        return equalsCheck(and, solution);
+    })
+  }
+
   return (
     <Box>
+      {hasWon() ? (<h2>VICTORY!</h2>) : ''}
       <Grid container spacing={3} columns={5}>
         {board.map((element: BoardEntry, index: number) => (
           <Grid item key={index} xs={1}>
