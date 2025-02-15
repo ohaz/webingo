@@ -1,5 +1,4 @@
-FROM denoland/deno:alpine
-
+FROM denoland/deno:alpine AS build
 
 WORKDIR /app/
 
@@ -17,4 +16,8 @@ RUN mkdir -p /app/client/dist/
 RUN rm -rf /app/client/dist/*
 
 
-CMD ["deno", "run", "--allow-net", "serve"]
+RUN deno run build
+
+FROM nginx:alpine AS serve
+
+COPY --from=build /app/client/dist/ /usr/share/nginx/html/
