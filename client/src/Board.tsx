@@ -119,20 +119,23 @@ export function Board() {
 
   return (
     <Box>
-      {hasWon() ? (<h2>VICTORY!</h2>) : ''}
-      <Grid container spacing={3} columns={5}>
-        {board.map((element: BoardEntry, index: number) => (
-          <Grid item key={index} xs={1}>
-            <BoardElement
-              toggle={() =>
-                toggle(index)}
-              key={"be-" + index}
-              data={element}
-            />
+      <Stack>
+        {hasWon() ? (<h2>VICTORY!</h2>) : ''}
+          <Grid container spacing={3} columns={5}>
+            {board.map((element: BoardEntry, index: number) => (
+              <Grid item key={index} xs={1}>
+                <BoardElement
+                  toggle={() =>
+                    toggle(index)}
+                  key={"be-" + index}
+                  data={element}
+                />
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
-      <Button sx={{ marginTop: "100px" }} onClick={restart}>Restart</Button>
+        <p>Entries marked with *Text* are actions and approximate.</p>
+        <Button sx={{ marginTop: "100px" }} onClick={restart}>Restart</Button>
+      </Stack>
     </Box>
   );
 }
